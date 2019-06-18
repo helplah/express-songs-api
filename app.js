@@ -11,12 +11,16 @@ let songs = [
 
 //return list of all songs
 app.get("/", (req, res) => {
+  // can do both .send and .json
   res.status(200).send(songs);
 });
 
 //create a new song, and return new song
 app.post("/", (req, res) => {
   // console.log(req.body);
+  // try {
+  //   req.body.array.forEach(element => {});
+  // } catch (err) {}
   songs.push(req.body);
   res.status(201).send(req.body);
 });
@@ -24,32 +28,31 @@ app.post("/", (req, res) => {
 //return a song with id
 app.get("/songs/:id", (req, res) => {
   const id = Number(req.params.id);
-  const song = songs.filter(song => {
+  const song = songs.find(song => {
+    // assuming there are no duplicate ids
     return song.id === id;
   });
 
-  res.send(song);
+  res.status(200).send(song);
 });
 
 //edit a song with id, and return edited song
 app.put("/songs/:id", (req, res) => {
   const id = Number(req.params.id);
-  const song = songs.filter(song => {
+  const song = songs.find(song => {
+    // assuming there are no duplicate ids
     return song.id === id;
   });
 
-  res.send(song);
+  song.name = req.body.name;
+  song.artist = req.body.artist;
+
+  res.status(200).send(song);
 });
 
 //delete a song with id, and return deleted song
 app.delete("/songs/:id", (req, res) => {
   const id = Number(req.params.id);
-  // const song = songs.filter(song, index => {
-  //   if (song.id === id) {
-  //     songs.splice(index, 1);
-  //     return song.id === id;
-  //   }
-  // });
 
   let song = [];
   for (let x = 0; x < songs.length; x++) {
@@ -58,7 +61,6 @@ app.delete("/songs/:id", (req, res) => {
       songs.splice(x, 1);
     }
   }
-  console.log("remaining songs", songs);
 
   res.send(song);
 });
