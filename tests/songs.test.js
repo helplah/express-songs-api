@@ -4,88 +4,63 @@ const request = require("supertest");
 //Fill in the test case below for the Songs API
 
 describe("routes/songs", () => {
+  const mockData = { id: 1, name: "test song", artist: "rihanna" };
+
   it("POST /songs should return a new song object", async () => {
-    requestBody = { name: "test song", artist: "rhianna" };
-
-    const postOneSong = await request(app)
+    const response = await request(app)
       .post("/songs")
-      .send(requestBody);
+      .send(mockData);
 
-    expect(postOneSong.status).toEqual(201);
-    expect(postOneSong.body).toMatchObject(requestBody);
+    expect(response.status).toEqual(201);
+    expect(response.body).toMatchObject(mockData);
   });
 
   it("GET /songs should return a non empty array", async () => {
-    requestBody = { name: "test song", artist: "rhianna" };
+    const response = await request(app).get("/songs");
 
-    const postOneSong = await request(app)
-      .post("/songs")
-      .send(requestBody);
-
-    const getAllSongs = await request(app).get("/songs");
-
-    expect(getAllSongs.status).toEqual(200);
-    expect(getAllSongs.body).not.toEqual([]);
+    expect(response.status).toEqual(200);
+    expect(response.body).not.toEqual([]);
+    expect(Array.isArray(response.body)).toBeTruthy();
+    expect(response.body[0]).toMatchObject(mockData);
   });
 
   it("GET /songs/:id should return song with id specified", async () => {
-    requestBody = { name: "test song", artist: "rhianna" };
+    const response = await request(app).get("/songs/1");
 
-    const postOneSong = await request(app)
-      .post("/songs")
-      .send(requestBody);
-
-    const getOneSong = await request(app).get("/songs/1");
-
-    expect(getOneSong.status).toEqual(200);
-    expect(getOneSong.body).toEqual({
-      id: 1,
-      name: "test song",
-      artist: "rhianna"
-    });
+    expect(response.status).toEqual(200);
+    expect(response.body).toEqual(mockData);
   });
 
   it("PUT /songs/:id should return the updated song", async () => {
-    requestBody = { name: "test song", artist: "rhianna" };
+    const updatedMockData = { id: 1, name: "Umbrella", artist: "Rihanna" };
 
-    const postOneSong = await request(app)
-      .post("/songs")
-      .send(requestBody);
-
-    const updateOneSong = await request(app)
+    const response = await request(app)
       .put("/songs/1")
-      .send({ name: "Umbrella", artist: "Rihanna" }) // x-www-form-urlencoded upload
+      .send(updatedMockData) // x-www-form-urlencoded upload
       .set("Accept", "application/json");
 
-    expect(updateOneSong.status).toEqual(200);
-    expect(updateOneSong.body).toEqual({
+    expect(response.status).toEqual(200);
+    expect(response.body.id).toEqual(updatedMockData.id);
+    expect(response.body).toMatchObject(updatedMockData);
+  });
+
+  it("DELETE /songs/:id should return the deleted song", async () => {
+    const response = await request(app).delete("/songs/1");
+
+    expect(response.status).toEqual(200);
+    expect(response.body).toEqual({
       id: 1,
       name: "Umbrella",
       artist: "Rihanna"
     });
   });
 
-  it.only("DELETE /songs/:id should return the deleted song", async () => {
-    requestBody = { name: "test song", artist: "rhianna" };
-
-    const postOneSong = await request(app)
-      .post("/songs")
-      .send(requestBody);
-
-    const deleteOneSong = await request(app).delete("/songs/1");
-
-    expect(deleteOneSong.status).toEqual(200);
-    expect(deleteOneSong.body).toEqual({
-      id: 1,
-      name: "test song",
-      artist: "rhianna"
-    });
-  });
-
   it("GET /songs should return an empty array", async () => {
-    const getAllSongs = await request(app).get("/songs");
+    const response = await request(app).get("/songs");
 
-    expect(getAllSongs.status).toEqual(200);
-    expect(getAllSongs.body).toEqual([]);
+    expect(response.status).toEqual(200);
+    expect(response.body).toEqual([]); // also can be Elson prefers toBeTruthy
+    expect(Array.isArray(response.body)).toBeTruthy();
+    expect(response.body).toHaveLength(0);
   });
 });
