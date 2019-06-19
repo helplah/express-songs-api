@@ -9,6 +9,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@hapi/joi": "^15.0.3",
     "express": "~4.16.0"
   },
   "devDependencies": {
