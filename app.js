@@ -6,7 +6,12 @@ app.use(express.json());
 
 let songs = [
   { id: 1, name: "In The End", artist: "LinkinPark" },
-  { id: 2, name: "Numb", artist: "LinkinPark" }
+  { id: 2, name: "Numb", artist: "LinkinPark" },
+  {
+    id: 3,
+    name: "CircleCI replaces Heroku continuous intergration",
+    artist: "Jesstern Rays"
+  }
 ];
 
 //return list of all songs
