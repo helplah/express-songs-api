@@ -11,7 +11,7 @@ jobs:
             echo 'This is the delivery pipeline'
   test:
     docker:
-      - image: alpine:3.7
+      - image: circleci/node:10.15.3
     steps:
       - run:
           name: Run unit tests
