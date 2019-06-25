@@ -4,9 +4,14 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
-    "test": "exit 0"
+    "test": "jest",
+    "test:watch": "jest --watchAll"
   },
   "dependencies": {
     "express": "~4.16.0"
+  },
+  "devDependencies": {
+    "jest": "^24.8.0",
+    "supertest": "^4.0.2"
   }
 }
