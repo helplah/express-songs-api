@@ -9,3 +9,10 @@ jobs:
           command: |
             echo 'Hello World!'
             echo 'This is the delivery pipeline'
+  test:
+    docker:
+      - image: alpine:3.7
+    steps:
+      - run:
+          name: Run unit tests
+          command: npm test
